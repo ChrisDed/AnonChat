@@ -12,7 +12,7 @@ class ServerConnections:
         self.addresses = {}
 
         config = configparser.RawConfigParser()
-        config.read(r'darkroom.conf')
+        config.read(r'anonchat.conf')
         HOST = config.get('config', 'HOST')
         self.PORT = int(config.get('config', 'PORT'))
         PASSWORD = config.get('config', 'PASSWORD')
@@ -34,7 +34,7 @@ class ServerConnections:
         while True:
             client, client_address = self.server.accept()
             print("%s:%s has connected." % client_address)
-            client.send(Encrypter.encrypt(self.key, b"You have entered the DarkRoom. Enter your alias."))
+            client.send(Encrypter.encrypt(self.key, b"You have entered AnonChat. Enter your alias."))
             self.addresses[client] = client_address
             Thread(target=self.handle_client, args=(client,)).start()
 
@@ -58,7 +58,7 @@ class ServerConnections:
         name = Encrypter.decrypt(self.key, name)
         welcome = b'Welcome, %s. If you want to quit, type !quit to exit.' % name
         client.send(Encrypter.encrypt(self.key, welcome))
-        msg = b"%s has joined the DarkRoom." % name
+        msg = b"%s has joined AnonChat." % name
         self.broadcast(Encrypter.encrypt(self.key, msg))
         self.clients[client] = name
 
@@ -72,7 +72,7 @@ class ServerConnections:
                 print("%s:%s has disconnected." % addresses[client])
                 client.close()
                 del clients[client]
-                self.broadcast(Encrypter.encrypt(self.key, b"%s has left the DarkRoom." % name))
+                self.broadcast(Encrypter.encrypt(self.key, b"%s has left the AnonChat." % name))
                 break
 
     # Broadcasts message to all users

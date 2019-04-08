@@ -4,7 +4,7 @@ class ClientGUI:
 
     def __init__(self, client):
         self.top = tk.Tk()
-        self.top.title("DarkRoom")
+        self.top.title("AnonChat")
         self.frame = self.create_frame()
         self.messages = self.message_area()
         self.entry_area()
